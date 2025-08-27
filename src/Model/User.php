@@ -20,11 +20,16 @@ class User
     #[Column]
     private string $email;
 
-    public function __construct(string $name, string $email)
+    #[Column]
+    private string $password;
+
+    public function __construct(string $name, string $email, string $password)
     {
         $this->name = $name;
         $this->email = $email;
+        $this->password = hash('sha256', $password);
     }
+
     public function getId(): int
     {
         return $this->id;
@@ -45,5 +50,17 @@ class User
         $em = Database::getEntityManager();
         $em->persist($this);
         $em->flush();
+    }
+
+    public static function findAll(): array
+    {
+        $em = Database::getEntityManager();
+        $repository = $em->getRepository(User::class);
+        return $repository->findAll();
+    }
+
+    public function validatePassword(string $password): bool
+    {
+        return $this->password == hash('sha256', $password);
     }
 }

@@ -7,11 +7,17 @@ require_once __DIR__ . '/../vendor/autoload.php';
 if ($_POST) {
     $user = new User(
         name: $_POST['user_name'],
-        email: $_POST['user_email']
+        email: $_POST['user_email'],
+        password: $_POST['user_password']
     );
     
     $user->save();
+
+    echo $user->validatePassword('123') ? 'Senha é 123': 'Senha não é 123';
 }
+
+$users = User::findAll();
+
 ?>
 
 <!DOCTYPE html>
@@ -28,8 +34,21 @@ if ($_POST) {
         <input type="text" name="user_name">
         <label>Email</label>
         <input type="text" name="user_email">
+        <label>Senha</label>
+        <input type="text" name="user_password">
         <input type="submit" value="Salvar">
     </form>
+    <h3>Lista de Usuários</h3>
+    <table>
+        <tr><th>Id</th><th>Nome</th><th>Email</th></tr>
+        <?php foreach($users as $user): ?>
+            <tr>
+                <td><?= $user->getId() ?></td>
+                <td><?= $user->getName() ?></td>
+                <td><?= $user->getEmail() ?></td>
+            </tr>
+        <?php endforeach ?>
+    </table>
 </body>
 </html>
 
