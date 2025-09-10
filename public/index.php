@@ -9,13 +9,14 @@ require_once __DIR__ . '/../vendor/autoload.php';
 $uri = $_SERVER['REQUEST_URI'];
 
 $pages = [
-    '/user' => new UserController,
-    '/sample' => new SampleController
+    '/user' => [new UserController, 'render'],
+    '/user/create' => [new UserController, 'create'],
+    '/sample' => [new SampleController, 'render']
 ];
 
-$controller = $pages[$uri] ?? new NotFoundController;
+$controller = $pages[$uri] ?? [new NotFoundController, 'render'];
 
-$controller->render();
+call_user_func($controller);
 
 ?>
 

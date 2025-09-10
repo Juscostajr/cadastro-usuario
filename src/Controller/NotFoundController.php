@@ -5,6 +5,7 @@ class NotFoundController implements Controller
 {
     public function render(): void
     {
-        include __DIR__ . '/../View/notFound.phtml';
+        $page = 'notFound.phtml';
+        include __DIR__ . '/../View/main.phtml';
     }
 }
